@@ -63,7 +63,7 @@ chmod +x laravel-new
 Optional: install globally
 
 ```bash
-sudo ln -s "$(pwd)/laravel-new" /usr/local/bin/laravel-new
+sudo ln -s "$(pwd)/create-laravel-docker.sh" /usr/local/bin/laravel-new
 ```
 
 Then run from anywhere:
@@ -285,6 +285,18 @@ Default MySQL credentials:
 | Username      | laravel |
 | Password      | secret  |
 | Root Password | root    |
+
+---
+
+# Testing
+
+The test suite runs inside Docker — no installs required on your machine.
+
+```bash
+bash run-tests.sh
+```
+
+Tests also run automatically on every push and pull request via GitHub Actions.
 
 ---
 
