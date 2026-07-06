@@ -7,24 +7,41 @@ echo "=============================================="
 echo " Laravel Docker Project Creator"
 echo "=============================================="
 echo ""
-echo "Enter the FULL PATH of the NEW project folder."
+echo "Enter the BASE PATH where the project folder"
+echo "will be created, or press ENTER to use the"
+echo "current directory."
 echo ""
 echo "Examples:"
-echo "  ~/Projects/my-api"
-echo "  ~/Projects/client-portal"
-echo "  /var/www/my-app"
-echo ""
-echo "The folder will be created automatically."
+echo "  ~/Projects"
+echo "  /var/www"
 echo ""
 
-read -rp "Project path: " PROJECT_PATH
+read -rp "Base path [$(pwd)]: " BASE_PATH
 
-PROJECT_PATH="${PROJECT_PATH/#\~/$HOME}"
+BASE_PATH="${BASE_PATH/#\~/$HOME}"
 
-if [ -z "$PROJECT_PATH" ]; then
-    echo "Project path is required."
-    exit 1
+if [ -z "$BASE_PATH" ]; then
+    BASE_PATH="$(pwd)"
 fi
+
+echo ""
+echo "Enter the PROJECT NAME. This will be used as"
+echo "the folder name, appended to the base path."
+echo ""
+echo "Examples:"
+echo "  my-api"
+echo "  client-portal"
+echo ""
+
+PROJECT_NAME=""
+while [ -z "$PROJECT_NAME" ]; do
+    read -rp "Project name: " PROJECT_NAME
+    if [ -z "$PROJECT_NAME" ]; then
+        echo "Project name is required."
+    fi
+done
+
+PROJECT_PATH="$BASE_PATH/$PROJECT_NAME"
 
 if [ -e "$PROJECT_PATH" ] && [ "$(ls -A "$PROJECT_PATH" 2>/dev/null)" ]; then
     echo "Directory already exists and is not empty:"
@@ -55,14 +72,14 @@ else
     exit 1
 fi
 
-PROJECT_NAME="$(basename "$PROJECT_PATH" | tr '[:upper:]' '[:lower:]' | tr -cd 'a-z0-9_-')"
+COMPOSE_PROJECT_NAME="$(echo "$PROJECT_NAME" | tr '[:upper:]' '[:lower:]' | tr -cd 'a-z0-9_-')"
 
 echo ""
 echo "Project will be created at:"
 echo "  $PROJECT_PATH"
 echo ""
 echo "Docker Compose project name:"
-echo "  $PROJECT_NAME"
+echo "  $COMPOSE_PROJECT_NAME"
 echo ""
 
 if [ "$API_ONLY" = true ]; then
@@ -214,7 +231,7 @@ echo "Adding Docker variables to Laravel .env..."
 cat >> "$PROJECT_PATH/.env" <<EOF
 
 # Docker
-COMPOSE_PROJECT_NAME=$PROJECT_NAME
+COMPOSE_PROJECT_NAME=$COMPOSE_PROJECT_NAME
 HOST_UID=$(id -u)
 HOST_GID=$(id -g)
 APP_PORT=8000

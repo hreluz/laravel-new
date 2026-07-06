@@ -50,26 +50,26 @@ docker compose version
 Clone the repository:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/laravel-new.git
+git clone https://github.com/hreluz/laravel-new.git
 cd laravel-new
 ```
 
 Make the script executable:
 
 ```bash
-chmod +x laravel-new
+chmod +x create-laravel-docker.sh
 ```
 
 Optional: install globally
 
 ```bash
-sudo ln -s "$(pwd)/create-laravel-docker.sh" /usr/local/bin/laravel-new
+sudo ln -s "$(pwd)/create-laravel-docker.sh" /usr/local/bin/laravel-new-project
 ```
 
 Then run from anywhere:
 
 ```bash
-laravel-new
+laravel-new-project
 ```
 
 ---
@@ -79,7 +79,7 @@ laravel-new
 Run:
 
 ```bash
-laravel-new
+laravel-new-project
 ```
 
 You will be prompted for:
@@ -89,17 +89,29 @@ You will be prompted for:
  Laravel Docker Project Creator
 ==============================================
 
-Enter the FULL PATH of the NEW project folder.
+Enter the BASE PATH where the project folder
+will be created, or press ENTER to use the
+current directory.
 
 Examples:
-  ~/Projects/my-api
-  ~/Projects/client-portal
-  /var/www/my-app
+  ~/Projects
+  /var/www
 
-The folder will be created automatically.
+Base path [/current/directory]:
 
-Project path:
+Enter the PROJECT NAME. This will be used as
+the folder name, appended to the base path.
+
+Examples:
+  my-api
+  client-portal
+
+Project name:
 ```
+
+Press ENTER on the base path without typing anything to use the current
+directory. The project name has no default and must be provided; the
+project folder will be created at `<base path>/<project name>`.
 
 Then choose the project type:
 
